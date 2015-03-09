@@ -110,17 +110,35 @@ function explicitRungeKutta2(_df, _y0, _x_nodes, _step, _alpha) {
 }
 
 // Implicit Euler
+// y' = x^2 + y^2
+// check statment _step and etc!!!
+function implicitEuler(_y0, _x_nodes, _step) {
+	var yNodes = [_y0],
+		denominator = accurateMulti(2, _step),
+		c, d;
 
+	for (var i = 1; i < _x_nodes.length; i++) {
+		c = accurateAdd(yNodes[i - 1],
+						accurateMulti(_step,
+									  accurateMulti(_x_nodes[i], _x_nodes[i])));
+		d = accurateSub(1, 
+						accurateMulti(c, 
+									  accurateMulti(4, _step)));
 
+		// console.log("d ", d);
+		// console.log("sqrt d ", Math.sqrt(d));
+		// console.log("top ", accurateSub(1, Math.sqrt(d)));
+		// console.log("bottom ", accurateMulti(2, _step));
+		// console.log("full ", accurateDiv(accurateSub(1, Math.sqrt(d)),
+		// 						accurateMulti(2, _step)));
 
+		if (d < 0) {
+			yNodes[i] = NaN;
+		} else {
+			yNodes[i] = accurateDiv(accurateSub(1, Math.sqrt(d)),
+								 denominator);	
+		}
+	}
 
-
-
-
-
-
-
-
-
-
-
+	return yNodes;
+}
