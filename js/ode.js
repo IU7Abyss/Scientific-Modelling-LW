@@ -46,9 +46,7 @@ function accurateDiv(_number1, _number2, _eps) {
 		return "Error";
 	}
 
-	var div = fixNumber(_number1, _eps) / fixNumber(_number2, _eps);
-
-	return div / Math.pow(10, _eps);
+	return fixNumber(_number1, _eps) / fixNumber(_number2, _eps);
 }
 
 
@@ -136,9 +134,57 @@ function implicitEuler(_y0, _x_nodes, _step) {
 			yNodes[i] = NaN;
 		} else {
 			yNodes[i] = accurateDiv(accurateSub(1, Math.sqrt(d)),
-								 denominator);	
+									denominator);	
 		}
 	}
 
 	return yNodes;
 }
+
+// Imlicit Runge-Kutta2
+// y' = x^2 + y^2
+// check statment _step and etc!!!
+function implicitRungeKutta2(_y0, _x_nodes, _step) {
+	var yNodes = [_y0],
+		midStep = accurateDiv(_step, 2),
+		doubleStep = accurateMulti(2, _step),
+		c, d;
+
+	for (var i = 1; i < _x_nodes.length; i++) {
+		c = accurateAdd(accurateMulti(midStep, 
+									  accurateAdd(accurateAdd(accurateMulti(_x_nodes[i - 1], _x_nodes[i - 1]),
+			 			 								   	  accurateMulti(_x_nodes[i], _x_nodes[i])), 
+												  accurateMulti(yNodes[i - 1], yNodes[i - 1]))), 
+						yNodes[i - 1]);
+		d = accurateSub(1, accurateMulti(doubleStep, c));
+
+		if (d < 0) {
+			yNodes[i] = NaN;
+		} else {
+			yNodes[i] = accurateDiv(accurateSub(1, Math.sqrt(d)),
+									_step);
+		}
+	}
+
+	return yNodes;	
+}
+
+// tests
+var y0 = 0,
+	xl = 0,
+	xr = 1,
+	step = 0.1;
+
+var n = makeNodes(xl, xr, step),
+	r1 = explicitEuler(derivative, y0, n, step),
+	r2 = explicitRungeKutta2(derivative, y0, n, step, 0.5),
+	r3 = explicitRungeKutta2(derivative, y0, n, step, 1),
+	r4 = implicitEuler(y0, n, step), 
+	r5 = implicitRungeKutta2(y0, n, step);
+
+console.log("Nodes:", n);
+console.log("Explicit Euler:", r1);
+console.log("Explicit Runge-Kutta2 with alpha 0.5:", r2);
+console.log("Explicit Runge-Kutta2 with alpha 1:", r3);
+console.log("Implicit Euler:", r4);
+console.log("Implicit Runge-Kutta2:", r5);
