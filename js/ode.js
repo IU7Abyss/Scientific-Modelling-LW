@@ -169,6 +169,18 @@ function implicitRungeKutta2(_y0, _x_nodes, _step) {
 	return yNodes;	
 }
 
+
+function buildTable(n, r1, r2, r3, r4, r5)
+{
+	var result = '';
+	for (node in n)
+	{
+		result += '<tr><td>'+n[node]+'</td><td>'+r1[node]+'</td><td>'+r2[node]+'</td><td>'+r3[node]+'</td><td>'+r4[node]+'</td><td>'+r5[node]+'</td></tr>';
+	}		
+
+	document.getElementById("tbodyResult").innerHTML = result;
+}
+
 // tests
 var y0 = 0,
 	xl = 0,
@@ -188,3 +200,6 @@ console.log("Explicit Runge-Kutta2 with alpha 0.5:", r2);
 console.log("Explicit Runge-Kutta2 with alpha 1:", r3);
 console.log("Implicit Euler:", r4);
 console.log("Implicit Runge-Kutta2:", r5);
+
+
+buildTable(n, r1, r2, r3, r4, r5);
