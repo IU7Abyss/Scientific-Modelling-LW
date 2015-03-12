@@ -33,20 +33,20 @@
   					<input type="text" value="" placeholder="Step" id="step" class="form-control"/>
   				</div>  				
   				<div class="col-md-2">
-  					<input type="button" value="Пересчитать" id="makeResult" class="btn btn-primary"/>
+  					<input type="button" value="Calculate" id="makeResult" class="btn btn-primary"/>
   				</div>
   			</div>
 	  		<table class="table table-striped table-hover">
 	  			<thead id="theadResult">
 	  				<th>X</th>
-	  				<th>R1</th>
-	  				<th>R2</th>
-	  				<th>R3</th>
-	  				<th>R4</th>
-	  				<th>R5</th>
-	<!--   				<th>R6</th>
-	  				<th>R7</th>
-	  				<th>R8</th> -->
+	  				<th>Y<sup>(1)</sup></th>
+	  				<th>Y<sup>(2)</sup></th>
+	  				<th>Y<sup>(3)</sup></th>
+	  				<th>Explicit Euler</th>
+	  				<th>Explicit R-K2 alpha=0.5</th>
+            <th>Explicit R-K2 alpha=1</th>
+            <th>Implicit Euler</th>
+            <th>Implicit R-K</th>
 	  			</thead>
 	  			<tbody id="tbodyResult">
 	  				
@@ -68,26 +68,31 @@
     <script type="text/javascript">
     	$('#makeResult').on('click', function()
     	{
-    		xl 	 = parseFloat($('#xl').val());
-    		xr 	 = parseFloat($('#xr').val());
+    		xl 	 = parseFloat($('#xl').val()),
+    		xr 	 = parseFloat($('#xr').val()),
     		step = parseFloat($('#step').val());
 
-			n  = makeNodes(xl, xr, step);
-			r1 = explicitEuler(derivative, y0, n, step);
-			r2 = explicitRungeKutta2(derivative, y0, n, step, 0.5);
-			r3 = explicitRungeKutta2(derivative, y0, n, step, 1);
-			r4 = implicitEuler(y0, n, step);
-			r5 = implicitRungeKutta2(y0, n, step);
-
-			console.log("Nodes:", n);
-			console.log("Explicit Euler:", r1);
-			console.log("Explicit Runge-Kutta2 with alpha 0.5:", r2);
-			console.log("Explicit Runge-Kutta2 with alpha 1:", r3);
-			console.log("Implicit Euler:", r4);
-			console.log("Implicit Runge-Kutta2:", r5);
 
 
-			buildTable(n, r1, r2, r3, r4, r5);
+        var n = makeNodes(xl, xr, step),
+        r1 = picard1(y0, n, step),
+        r2 = picard2(y0, n, step),
+        r3 = picard3(y0, n, step),
+        r4 = explicitEuler(derivative, y0, n, step),
+        r5 = explicitRungeKutta2(derivative, y0, n, step, 0.5),
+        r6 = explicitRungeKutta2(derivative, y0, n, step, 1),
+        r7 = implicitEuler(y0, n, step), 
+        r8 = implicitRungeKutta2(y0, n, step);
+
+			// console.log("Nodes:", n);
+			// console.log("Explicit Euler:", r1);
+			// console.log("Explicit Runge-Kutta2 with alpha 0.5:", r2);
+			// console.log("Explicit Runge-Kutta2 with alpha 1:", r3);
+			// console.log("Implicit Euler:", r4);
+			// console.log("Implicit Runge-Kutta2:", r5);
+
+
+			buildTable(n, r1, r2, r3, r4, r5, r6, r7, r8);
     	});
 
     	$(document).ready(function(){

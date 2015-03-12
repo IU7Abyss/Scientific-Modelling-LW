@@ -68,7 +68,51 @@ function makeNodes(_x_l, _x_r, _step) {
 	return nodes;
 }
 
-// Explicit Euler Method
+function picard1(_y0, _x_nodes) {
+	var yNodes = [_y0],
+		xxx;
+
+	for (var i = 1; i < _x_nodes.length; i++) {
+		xxx = accurateMulti(accurateMulti(_x_nodes[i], _x_nodes[i]), _x_nodes[i]);
+		yNodes[i] = accurateDiv(xxx, 3);
+	}
+
+	return yNodes;
+}
+
+function picard2(_y0, _x_nodes) {
+	var yNodes = [_y0],
+		k1 = accurateDiv(1, 63),
+		xxxx, xxx;
+
+	for (var i = 1; i < _x_nodes.length; i++) {
+		xxx = accurateMulti(accurateMulti(_x_nodes[i], _x_nodes[i]), _x_nodes[i]);
+		xxxx = accurateMulti(xxx, _x_nodes[i]);
+		yNodes[i] = accurateMulti(accurateMulti(k1, xxx),
+								  accurateAdd(xxxx, 21));
+	}
+
+	return yNodes;
+}
+
+function picard3(_y0, _x_nodes) {
+	var yNodes = [_y0],
+		x15, x11, x7, x3;
+
+	for (var i = 1; i < _x_nodes.length; i++) {
+		x3 = accurateMulti(_x_nodes[i], accurateMulti(_x_nodes[i], _x_nodes[i]));
+		x7 = accurateMulti(_x_nodes[i], accurateMulti(x3, x3));
+		x11 = accurateMulti(_x_nodes[i], accurateMulti(x7, x3));
+		x15 = accurateMulti(_x_nodes[i], accurateMulti(x7, x7));
+
+		yNodes[i] = accurateAdd(accurateDiv(x15, 59535),
+								accurateAdd(accurateDiv(x11, 1039.5),
+											accurateAdd(accurateDiv(x7, 63), accurateDiv(x3, 3))));
+	}
+
+	return yNodes
+}
+
 function explicitEuler(_derivative_f, _y0, _x_nodes, _step) {
 	var yNodes = [_y0];
 
@@ -170,36 +214,58 @@ function implicitRungeKutta2(_y0, _x_nodes, _step) {
 }
 
 
-function buildTable(n, r1, r2, r3, r4, r5)
+function buildTable(n, r1, r2, r3, r4, r5, r6, r7, r8)
 {
 	var result = '';
 	for (node in n)
 	{
-		result += '<tr><td>'+n[node]+'</td><td>'+r1[node]+'</td><td>'+r2[node]+'</td><td>'+r3[node]+'</td><td>'+r4[node]+'</td><td>'+r5[node]+'</td></tr>';
+		result += '<tr>';
+		result += '<td>'+n[node]+'</td>';
+		result += '<td>'+r1[node]+'</td>';
+		result += '<td>'+r2[node]+'</td>';
+		result += '<td>'+r3[node]+'</td>';
+		result += '<td>'+r4[node]+'</td>';
+		result += '<td>'+r5[node]+'</td>';
+		result += '<td>'+r6[node]+'</td>';
+		result += '<td>'+r7[node]+'</td>';
+		result += '<td>'+r8[node]+'</td>';
+		result += '</tr>';
 	}		
 
 	document.getElementById("tbodyResult").innerHTML = result;
 }
 
-// tests
 var y0 = 0,
 	xl = 0,
 	xr = 1,
 	step = 0.1;
 
-var n = makeNodes(xl, xr, step),
-	r1 = explicitEuler(derivative, y0, n, step),
-	r2 = explicitRungeKutta2(derivative, y0, n, step, 0.5),
-	r3 = explicitRungeKutta2(derivative, y0, n, step, 1),
-	r4 = implicitEuler(y0, n, step), 
-	r5 = implicitRungeKutta2(y0, n, step);
+// tests
+// var y0 = 0,
+// 	xl = 0,
+// 	xr = 1,
+// 	step = 0.1;
 
-console.log("Nodes:", n);
-console.log("Explicit Euler:", r1);
-console.log("Explicit Runge-Kutta2 with alpha 0.5:", r2);
-console.log("Explicit Runge-Kutta2 with alpha 1:", r3);
-console.log("Implicit Euler:", r4);
-console.log("Implicit Runge-Kutta2:", r5);
+// var n = makeNodes(xl, xr, step),
+// 	r1 = picard1(y0, n, step),
+// 	r2 = picard2(y0, n, step),
+// 	r3 = picard3(y0, n, step),
+// 	r4 = explicitEuler(derivative, y0, n, step),
+// 	r5 = explicitRungeKutta2(derivative, y0, n, step, 0.5),
+// 	r6 = explicitRungeKutta2(derivative, y0, n, step, 1),
+// 	r7 = implicitEuler(y0, n, step), 
+// 	r8 = implicitRungeKutta2(y0, n, step);
+	
+
+// console.log("Nodes:", n);
+// console.log("Picard1", r6);
+// console.log("Picard2", r7);
+// console.log("Picard3", r8);
+// console.log("Explicit Euler:", r1);
+// console.log("Explicit Runge-Kutta2 with alpha 0.5:", r2);
+// console.log("Explicit Runge-Kutta2 with alpha 1:", r3);
+// console.log("Implicit Euler:", r4);
+// console.log("Implicit Runge-Kutta2:", r5);
 
 
-buildTable(n, r1, r2, r3, r4, r5);
+// buildTable(n, r1, r2, r3, r4, r5, r6, r7, r8);
