@@ -2,6 +2,7 @@
 *.html
 
 # Xcode
+Debug
 Intermediates
 *.dSYM
 DerivedData
