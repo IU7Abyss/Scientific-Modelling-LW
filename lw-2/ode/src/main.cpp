@@ -29,12 +29,11 @@ task1 (double t0,
        double l_e,
        double R,
        double Tw,
-       double eps,
        const std::map< double, std::vector<double> > &map_I_T0_n,
        const std::map<double, double> &map_T_Sigma,
        const std::string &filename)
 {
-    Model m1 = model_runge(t0, t_end, t_delta, I0, Uc_0, Ck, Lk, Rk, l_e, R, Tw, eps, map_I_T0_n, map_T_Sigma);
+    Model m1 = model_runge(t0, t_end, t_delta, I0, Uc_0, Ck, Lk, Rk, l_e, R, Tw, map_I_T0_n, map_T_Sigma);
     cout << "Runge 4 computaton compelted." << '\n';
     makeCSV(filename, "t,I,Uc,Rp", m1);
 }
@@ -51,12 +50,11 @@ task2 (double t0,
        double l_e,
        double R,
        double Tw,
-       double eps,
        const std::map< double, std::vector<double> > &map_I_T0_n,
        const std::map<double, double> &map_T_Sigma,
        const std::string &filename)
 {
-    Model m2 = model_trapezium(t0, t_end, t_delta, I0, Uc_0, Ck, Lk, Rk, l_e, R, Tw, eps, map_I_T0_n, map_T_Sigma);
+    Model m2 = model_trapezium(t0, t_end, t_delta, I0, Uc_0, Ck, Lk, Rk, l_e, R, Tw, map_I_T0_n, map_T_Sigma);
     cout << "Trapezium computaton compelted." << '\n';
     makeCSV(filename, "t,I,Uc,Rp", m2);
 }
@@ -90,31 +88,16 @@ int main(int argc, const char * argv[])
     double Rk      = inputdata["Rk"];
     double l_e     = inputdata["l_e"];
     double Tw      = inputdata["Tw"];
-    double eps     = inputdata["eps"];
     double R       = inputdata["R"];
     string runge4_out    = argv[4];
     string trapezium_out = argv[5];
-    
-//    cout << "One thread" << '\n';
-//    
-//    auto start_time = std::chrono::high_resolution_clock::now();
-//    
-//    task1(t0, t_end, t_delta, I0, Uc_0, Ck, Lk, Rk, l_e, R, Tw, eps, I_T0_n, T_Sigma, filename1);
-//    task2(t0, t_end, t_delta, I0, Uc_0, Ck, Lk, Rk, l_e, R, Tw, eps, I_T0_n, T_Sigma, filename2);
-//    
-//    auto end_time = std::chrono::high_resolution_clock::now();
-//    
-//    cout << std::chrono::duration_cast<std::chrono::seconds>(end_time - start_time).count() << ':';
-//    cout << std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count() << ":\n";
-//    
-//    cout << "Two thread" << '\n';
     
     cout << "Computation..." << '\n';
     
     auto start_time = std::chrono::high_resolution_clock::now();
     
-    thread t1(task1, t0, t_end, t_delta, I0, Uc_0, Ck, Lk, Rk, l_e, R, Tw, eps, I_T0_n, T_Sigma, runge4_out);
-    thread t2(task2, t0, t_end, t_delta, I0, Uc_0, Ck, Lk, Rk, l_e, R, Tw, eps, I_T0_n, T_Sigma, trapezium_out);
+    thread t1(task1, t0, t_end, t_delta, I0, Uc_0, Ck, Lk, Rk, l_e, R, Tw, I_T0_n, T_Sigma, runge4_out);
+    thread t2(task2, t0, t_end, t_delta, I0, Uc_0, Ck, Lk, Rk, l_e, R, Tw, I_T0_n, T_Sigma, trapezium_out);
     
     t1.join();
     t2.join();
