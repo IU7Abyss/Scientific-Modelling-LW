@@ -22,7 +22,7 @@ public:
     : m_f(f), m_a(a), m_b(b), m_eps(eps), m_depth(depth)
     { }
     FunctorIntegral(const FunctorG *f, double a, double b)
-    : FunctorIntegral(f, a, b, 1e-4, 5)
+    : FunctorIntegral(f, a, b, 1e-4, 10)
     { }
 public:
     double operator () () const;
