@@ -17,7 +17,7 @@ set title "I(t)"
 set key off
 plot runge4_data using "t":"I" \
                  title "Runge 4" \
-                 with lines lw 2, \
+                 with lines lw 4, \
      trapezium_data using "t":"I" \
                     title "Trapezium" \
                     with lines lw 2
@@ -27,7 +27,7 @@ set title "Uc(t)"
 set key on
 plot runge4_data using "t":"Uc" \
                  title "Runge 4" \
-                 with lines lw 2, \
+                 with lines lw 4, \
      trapezium_data using "t":"Uc" \
                     title "Trapezium" \
                     with lines lw 2
@@ -36,7 +36,7 @@ set title "Rp(t)"
 set key off
 plot runge4_data using "t":"Rp" \
                  title "Runge 4" \
-                 with lines lw 2, \
+                 with lines lw 4, \
      trapezium_data using "t":"Rp" \
                     title "Trapezium" \
                     with lines lw 2

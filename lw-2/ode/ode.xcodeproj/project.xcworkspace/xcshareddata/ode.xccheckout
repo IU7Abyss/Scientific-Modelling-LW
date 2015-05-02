@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E203958A-6061-4E57-BBC4-BCEC661C0073</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ode</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>7359C7E9B7D6C683D07A758AC538321E6A0D5273</key>
+		<string>https://github.com/IU7Abyss/Scientific-Modelling-LW.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>lw-2/ode/ode.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>7359C7E9B7D6C683D07A758AC538321E6A0D5273</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/IU7Abyss/Scientific-Modelling-LW.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>7359C7E9B7D6C683D07A758AC538321E6A0D5273</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>7359C7E9B7D6C683D07A758AC538321E6A0D5273</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Scientific-Modelling-LW</string>
+		</dict>
+	</array>
+</dict>
+</plist>
