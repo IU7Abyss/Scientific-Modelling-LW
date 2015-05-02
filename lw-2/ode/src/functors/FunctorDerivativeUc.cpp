@@ -8,14 +8,16 @@
 
 #include "FunctorDerivativeUc.h"
 
+#include <cmath>
+
 double
 FunctorDerivativeUc::operator () (double I)
 {
-    return - I / m_Ck;
+    return I < 0.0 ? std::nan(NULL) : - I / m_Ck;
 }
 
 double
 FunctorDerivativeUc::operator () (double I, double Uc)
 {
-    return (*this)(I);
+    return (I < 0.0 || std::isnan(I) || Uc < 0.0 || std::isnan(Uc)) ? std::nan(NULL) : (*this)(I);
 }

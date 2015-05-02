@@ -10,9 +10,16 @@
 
 #include "FunctorRp.h"
 
+#include <cmath>
+
 
 double
 FunctorDerivativeI::operator () (double I, double Uc) const
 {
-    return (Uc - (m_Rk + (*m_Rp)(I))*I) / m_Lk;
+    if (I < 0.0 || Uc < 0.0 || std::isnan(I) || std::isnan(Uc))
+        return std::nan(NULL);
+    
+    double Rp = (*m_Rp)(I);
+    
+    return std::isnan(Rp) ? std::nan(NULL) : (Uc - (m_Rk + Rp)*I) / m_Lk;
 }

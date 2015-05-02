@@ -17,11 +17,15 @@
 double
 FunctorRp::operator () (double I) const
 {
+    if (I < 0.0 || std::isnan(I)) {
+        return std::nan(NULL);
+    }
+    
     FunctorT ft(m_Tw, I, *m_map_I_T0_n);
     FunctorG fg(&ft, &m_fsigma);
     FunctorIntegral integral(&fg, 0.0, 1.0);
     
     double fi = integral();
     
-    return fi > 0.0 ? m_l_e / (2.0 * M_PI * m_r * m_r * fi) : 0.0;
+    return (fi <= 0.0 || std::isnan(fi)) ? std::nan(NULL) : m_l_e / (2.0 * M_PI * m_r * m_r * fi);
 }

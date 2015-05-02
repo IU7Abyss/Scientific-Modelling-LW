@@ -18,7 +18,10 @@ FunctorT::FunctorT (double T_w, double I, const std::map< double, std::vector<do
 {
     m_T_w = T_w;
     
-    if (I < aTable.begin()->first) {
+    if (I < 0.0 || std::isnan(I) || T_w < 0.0 || std::isnan(T_w)) {
+        m_T_0 = std::nan(NULL);
+        m_n = std::nan(NULL);
+    } else if (I < aTable.begin()->first) {
         auto   it   = aTable.begin();
        
         double x_0  = it->first;

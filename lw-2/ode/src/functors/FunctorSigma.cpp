@@ -10,14 +10,16 @@
 
 #include "algorithms/approx.h"
 
-
+#include <cmath>
 
 double
 FunctorSigma::operator () (double T) const
 {
-    double result = 0.0;
+    double result;
     
-    if (T < m_table->cbegin()->first) {
+    if (T < 0.0 || std::isnan(T)) {
+        result = std::nan(NULL);
+    } else if (T < m_table->cbegin()->first) {
               auto   it  = m_table->cbegin();
               double x_0 = it->first, y_0 = it->second;
         ++it; double x_1 = it->first, y_1 = it->second;

@@ -35,11 +35,12 @@ double calc_I (double I_prev,
     double it_I = k_num / (k_den + k2 * Rp_prev);
     double it_I_prev;
     
+    int i = 0;
     do {
+        ++i;
         it_I_prev = it_I;
         it_I = k_num / (k_den + k2 * Rp_f(it_I_prev));
-    } while (abs(1.0 - it_I_prev / it_I) >= eps);
-    
+    } while (abs(1.0 - it_I_prev / it_I) >= eps && i < 10);
     
     return it_I;
 }
