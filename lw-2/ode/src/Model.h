@@ -27,7 +27,6 @@ model_runge (double t0,
              double l_e,
              double R,
              double Tw,
-             double eps,
              const std::map< double, std::vector<double> > &map_I_T0_n,
              const std::map<double, double> &map_T_Sigma);
 
@@ -44,7 +43,6 @@ model_trapezium (double t0,
                  double l_e,
                  double R,
                  double Tw,
-                 double eps,
                  const std::map< double, std::vector<double> > &map_I_T0_n,
                  const std::map<double, double> &map_T_Sigma);
 

@@ -29,7 +29,6 @@ model_runge (double t0,
              double l_e,
              double R,
              double Tw,
-             double eps,
              const std::map< double, std::vector<double> > &map_I_T0_n,
              const std::map<double, double> &map_T_Sigma)
 {
@@ -38,8 +37,9 @@ model_runge (double t0,
     using std::array;
     using std::move;
     using std::round;
+    using std::isnan;
     
-    FunctorRp Rp_f (l_e, R, Tw, eps, &map_I_T0_n, &map_T_Sigma);
+    FunctorRp Rp_f (l_e, R, Tw, &map_I_T0_n, &map_T_Sigma);
     FunctorDerivativeI I_derivative(Rk, Lk, &Rp_f);
     FunctorDerivativeUc Uc_derivative(Ck);
     
@@ -56,14 +56,14 @@ model_runge (double t0,
         double Uc_prev = (it_prev->second)[1];
         
         array<double, 2> I_Uc = runge4_ode(I_derivative, Uc_derivative, I_prev, Uc_prev, t_delta);
-        if (I_Uc[0] < 0.0 || I_Uc[1] < 0.0) break;
+        if (I_Uc[0] < 1.0 || isnan(I_Uc[0]) || isnan(I_Uc[1])) break;
         vector<double> row;
         row.reserve(4);
         row.push_back(I_Uc[0]);
         row.push_back(I_Uc[1]);
         
         double Rp = Rp_f(I_Uc[0]);
-        if (Rp < 0.0) break;
+        if (Rp < 0.0 || isnan(Rp)) break;
         row.push_back(Rp);
         
         double t = t0 + t_delta*i;
@@ -86,17 +86,17 @@ model_trapezium (double t0,
                  double l_e,
                  double R,
                  double Tw,
-                 double eps,
                  const std::map< double, std::vector<double> > &map_I_T0_n,
                  const std::map<double, double> &map_T_Sigma)
 {
     using std::map;
     using std::vector;
     using std::move;
+    using std::isnan;
     using trapezium::calc_I;
     using trapezium::calc_Uc;
     
-    FunctorRp Rp_f (l_e, R, Tw, eps, &map_I_T0_n, &map_T_Sigma);
+    FunctorRp Rp_f (l_e, R, Tw, &map_I_T0_n, &map_T_Sigma);
     
     double Rp_0 = Rp_f(I0);
     
@@ -111,18 +111,18 @@ model_trapezium (double t0,
         double Uc_prev = (it_prev->second)[1];
         double Rp_prev = (it_prev->second)[2];
         
-        double I = calc_I(I_prev, Uc_prev, Rp_prev, Rp_f, t_delta, Rk, Lk, Ck, eps);
-        if (I < 0.0) break;
+        double I = calc_I(I_prev, Uc_prev, Rp_prev, Rp_f, t_delta, Rk, Lk, Ck, 1e-4);
+        if (I < 1.0 || isnan(I)) break;
         vector<double> row;
         row.reserve(4);
         row.push_back(I);
         
         double Uc = calc_Uc(Uc_prev, I_prev, I, Ck, t_delta);
-        if (Uc < 0.0) break;
+        if (Uc < 0.0 || isnan(Uc)) break;
         row.push_back(Uc);
         
         double Rp = Rp_f(I);
-        if (Rp < 0.0) break;
+        if (Rp < 0.0 || isnan(Rp)) break;
         row.push_back(Rp);
         
         double t = t0 + t_delta*i;
