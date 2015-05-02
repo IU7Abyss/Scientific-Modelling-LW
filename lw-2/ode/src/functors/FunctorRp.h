@@ -18,12 +18,11 @@ private:
     double m_l_e;
     double m_r;
     double m_Tw;
-    double m_eps;
     const std::map< double, std::vector<double> > *m_map_I_T0_n;
     const FunctorSigma m_fsigma;
 public:
-    FunctorRp (double l_e, double r, double Tw, double eps, const std::map< double, std::vector<double> > *map_I_T0_n, const std::map<double, double> *map_T_sigma)
-    : m_l_e(l_e), m_r(r), m_Tw(Tw), m_eps(eps), m_map_I_T0_n(map_I_T0_n), m_fsigma(map_T_sigma)
+    FunctorRp (double l_e, double r, double Tw, const std::map< double, std::vector<double> > *map_I_T0_n, const std::map<double, double> *map_T_sigma)
+    : m_l_e(l_e), m_r(r), m_Tw(Tw), m_map_I_T0_n(map_I_T0_n), m_fsigma(map_T_sigma)
     {  }
 public:
     double operator () (double I) const;
