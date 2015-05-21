@@ -2,8 +2,10 @@
 
 cd `dirname "$0"`
 
-./run_test1.sh &
+./example-1.sh &
 sleep 1
-./run_test2.sh &
+./example-2.sh &
 sleep 1
-./run_test3.sh
+./example-3.sh &
+sleep 1
+./example-4.sh
